@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Mixer Game</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 500px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .color-display {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: background-color 0.3s;
+        }
+
+        .sliders {
+            margin: 30px 0;
+        }
+
+        .slider-group {
+            margin: 20px 0;
+        }
+
+        .slider-group label {
+            display: inline-block;
+            width: 80px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        input[type="range"] {
+            width: 250px;
+            cursor: pointer;
+        }
+
+        .value {
+            display: inline-block;
+            width: 40px;
+            text-align: right;
+            font-weight: bold;
+        }
+
+        .red { color: #e74c3c; }
+        .green { color: #2ecc71; }
+        .blue { color: #3498db; }
+
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 10px;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #764ba2;
+            transform: scale(1.05);
+        }
+
+        .code {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Color Mixer</h1>
+        <p>Mix your own color using RGB values!</p>
+
+        <div class="color-display" id="colorBox"></div>
+
+        <div class="sliders">
+            <div class="slider-group">
+                <label class="red">Red:</label>
+                <input type="range" id="red" min="0" max="255" value="128">
+                <span class="value red" id="redValue">128</span>
+            </div>
+
+            <div class="slider-group">
+                <label class="green">Green:</label>
+                <input type="range" id="green" min="0" max="255" value="128">
+                <span class="value green" id="greenValue">128</span>
+            </div>
+
+            <div class="slider-group">
+                <label class="blue">Blue:</label>
+                <input type="range" id="blue" min="0" max="255" value="128">
+                <span class="value blue" id="blueValue">128</span>
+            </div>
+        </div>
+
+        <div class="code" id="colorCode">rgb(128, 128, 128)</div>
+
+        <button onclick="randomColor()"> Random Color</button>
+        <button onclick="copyColor()"> Copy Code</button>
+    </div>
+
+    <script>
+        const redSlider = document.getElementById('red');
+        const greenSlider = document.getElementById('green');
+        const blueSlider = document.getElementById('blue');
+        const colorBox = document.getElementById('colorBox');
+        const colorCode = document.getElementById('colorCode');
+
+        function updateColor() {
+            const r = redSlider.value;
+            const g = greenSlider.value;
+            const b = blueSlider.value;
+
+            const color = `rgb(${r}, ${g}, ${b})`;
+            colorBox.style.backgroundColor = color;
+            colorCode.textContent = color;
+
+            document.getElementById('redValue').textContent = r;
+            document.getElementById('greenValue').textContent = g;
+            document.getElementById('blueValue').textContent = b;
+        }
+
+        redSlider.addEventListener('input', updateColor);
+        greenSlider.addEventListener('input', updateColor);
+        blueSlider.addEventListener('input', updateColor);
+
+        function randomColor() {
+            redSlider.value = Math.floor(Math.random() * 256);
+            greenSlider.value = Math.floor(Math.random() * 256);
+            blueSlider.value = Math.floor(Math.random() * 256);
+            updateColor();
+        }
+
+        function copyColor() {
+            navigator.clipboard.writeText(colorCode.textContent);
+            alert('Color code copied!');
+        }
+
+        updateColor();
+    </script>
+</body>
+</html>
